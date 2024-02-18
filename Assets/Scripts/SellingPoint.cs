@@ -27,14 +27,6 @@ public class SellingPoint : MonoBehaviour
             {
                 obj.transform.DOJump(targetPosition, jumpPower, numJumps, duration);
             }
-            //other.transform.DOJump(Destination, JumpPower, JumpCount, Duration);
-            // Проверяем, что скрипт Character существует
-            if (characterScript != null)
-            {
-                // Удаляем объект из массива в скрипте Character
-                characterScript.RemoveTakedFromList(gameObject);
-                // Здесь можно добавить дополнительные действия, связанные с продажей объекта
-            }
         }
     }
 

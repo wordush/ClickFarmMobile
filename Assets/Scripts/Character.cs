@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Character : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class Character : MonoBehaviour
     void Update()
     {
         Moving();
-        TakedLists();
+        GetTakedList();
         CheckingForAnims();
     }
 
@@ -37,15 +38,13 @@ public class Character : MonoBehaviour
     public void RemoveTakedFromList(GameObject obj)
     {
         if (obj == null) return;
-
+        Debug.Log("udelen");
         // Поиск объекта в массиве и удаление его
-        for (int i = 0; i < takedCoins.Length; i++)
+        for (int i = 0; i < takedCoins.Length;i++)
         {
-            if (takedCoins[i] == obj)
-            {
-                takedCoins[i] = null;
-                break;
-            }
+            Debug.Log("udelen 2");
+            Destroy(takedCoins[i]);
+            Debug.Log("udelen 3" + i + "Штук");
         }
     }
 
