@@ -1042,6 +1042,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterScript: {fileID: 2070148817}
+  playerScript: {fileID: 2070148814}
 --- !u!1 &483262853
 GameObject:
   m_ObjectHideFlags: 0

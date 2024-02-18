@@ -6,6 +6,7 @@ TagManager:
   tags:
   - stacking
   - Taked
+  - untacked
   layers:
   - Default
   - TransparentFX

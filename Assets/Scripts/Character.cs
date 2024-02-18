@@ -12,11 +12,11 @@ public class Character : MonoBehaviour
     [SerializeField] public Rigidbody rb;
     [SerializeField] public Animator animator;
 
-    void Update()
+    void FixedUpdate()
     {
         Moving();
-        GetTakedList();
         CheckingForAnims();
+        GetTakedList();
     }
 
     void Moving()
@@ -30,21 +30,16 @@ public class Character : MonoBehaviour
         } else { animator.SetBool("isRunning", false); }
     }
 
-    void GetTakedList()
+    public void GetTakedList()
     {
         takedCoins = GameObject.FindGameObjectsWithTag("Taked");
     }
 
     public void RemoveTakedFromList(GameObject obj)
     {
-        if (obj == null) return;
-        Debug.Log("udelen");
-        // Поиск объекта в массиве и удаление его
-        for (int i = 0; i < takedCoins.Length;i++)
+        for (int i = 0; i <= takedCoins.Length; i++)
         {
-            Debug.Log("udelen 2");
             Destroy(takedCoins[i]);
-            Debug.Log("udelen 3" + i + "Штук");
         }
     }
 

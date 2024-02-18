@@ -18,14 +18,14 @@ public class SellingPoint : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // Проверяем столкновение с игроком
         if (other.CompareTag("Player"))
         {
             // Получаем компонент Character на объекте Player
             Character characterScript = other.GetComponent<Character>();
+
             foreach (GameObject obj in characterScript.takedCoins)
             {
-                obj.transform.DOJump(targetPosition, jumpPower, numJumps, duration);
+                obj.transform.DOJump(targetPosition, jumpPower, numJumps, duration); //анимация
             }
         }
     }
