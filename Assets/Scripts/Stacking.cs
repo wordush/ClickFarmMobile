@@ -9,18 +9,18 @@ public class Stacking : MonoBehaviour
     public GameObject playerScript;
     [SerializeField] Transform player;
     float stackCount = 0;
-    float objectHight = 0.2f;
+    float objectHight = 0.185f;
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("BAM");
+        Debug.Log("Picked Up!");
         if (other.CompareTag("stacking"))
         {
-            Transform coin = other.transform;
-            coin.tag = "Taked";
-            coin.SetParent(this.transform);
-            coin.DOLocalMove(new Vector3(-0.01f, 0.4f + objectHight*stackCount, 0.4f), 0.5f);
-            coin.localRotation = Quaternion.Euler(0, 90, 0);
+            Transform Collectable_Object = other.transform;
+            Collectable_Object.tag = "Taked";
+            Collectable_Object.SetParent(this.transform);
+            Collectable_Object.DOLocalMove(new Vector3(0.1f, 0.6f + objectHight*stackCount, 0.4f), 0.5f);
+            Collectable_Object.localRotation = Quaternion.Euler(0, 0, 0);
             stackCount++;
             characterScript.GetTakedList();
         }
