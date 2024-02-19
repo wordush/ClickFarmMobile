@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class Character : MonoBehaviour
 {
-    public GameObject[] takedCoins;
+    public GameObject[] takedBoxes;
     public float speed;
     public bool isRunningEmpty;
     [SerializeField] public FloatingJoystick joystick;
@@ -32,20 +32,20 @@ public class Character : MonoBehaviour
 
     public void GetTakedList()
     {
-        takedCoins = GameObject.FindGameObjectsWithTag("Taked");
+        takedBoxes = GameObject.FindGameObjectsWithTag("Taked");
     }
 
     public void RemoveTakedFromList(GameObject obj)
     {
-        for (int i = 0; i <= takedCoins.Length; i++)
+        for (int i = 0; i <= takedBoxes.Length; i++)
         {
-            Destroy(takedCoins[i]);
+            Destroy(takedBoxes[i]);
         }
     }
 
     void CheckingForAnims()
     {
-        if (takedCoins.Length > 0) { isRunningEmpty = false; animator.SetBool("isRunningEmpty", false); } else { isRunningEmpty = true; animator.SetBool("isRunningEmpty", true); }
+        if (takedBoxes.Length > 0) { isRunningEmpty = false; animator.SetBool("isRunningEmpty", false); } else { isRunningEmpty = true; animator.SetBool("isRunningEmpty", true); }
 
     }
 }

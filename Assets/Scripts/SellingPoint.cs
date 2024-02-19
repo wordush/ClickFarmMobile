@@ -23,7 +23,7 @@ public class SellingPoint : MonoBehaviour
             // Получаем компонент Character на объекте Player
             Character characterScript = other.GetComponent<Character>();
 
-            foreach (GameObject obj in characterScript.takedCoins)
+            foreach (GameObject obj in characterScript.takedBoxes)
             {
                 obj.transform.DOJump(targetPosition, jumpPower, numJumps, duration); //анимация
             }
