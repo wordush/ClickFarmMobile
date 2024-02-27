@@ -3,33 +3,89 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SocialPlatforms;
+using System.Threading.Tasks;
+using System.Linq;
 
 public class Stacking : MonoBehaviour
 {
-    public Character characterScript;
-    public GameObject playerScript;
-    [SerializeField] Transform player;
-    float stackCount = 0;
-    float objectHight = 0.185f;
+    public Character CharacterScript;
+    public GameObject PlayerScript;
+    public SavedResources SaveManager;
+
+    public Transform player;
+    public Transform boxParentPos;
+
+    public List<Transform> takedBoxes = new List<Transform>();
+
+    public bool isTaked;
+    public bool isListEmpty;
+    public int stackCount;
+    public float objectHight = 0.185f;
+    public float duration = 2f;
+    
+
+
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Debug.Log("EEE");
+            SaveManager.MaxBoxesAdd(2);
+        }
+    }
+
+    void Start()
+    {
+        CharacterScript = PlayerScript.GetComponent<Character>();
+        SaveManager = SaveManager.GetComponent<SavedResources>();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Picked Up!");
-        if (other.CompareTag("stacking"))
+        int maxTaked = SaveManager.EventMaxBoxesLoad();
+        if(other.CompareTag("Stacking") && maxTaked > stackCount)
         {
-            Transform Collectable_Object = other.transform;
-            Collectable_Object.tag = "Taked";
-            Collectable_Object.SetParent(this.transform);
-            Collectable_Object.DOLocalMove(new Vector3(0.1f, 0.6f + objectHight * characterScript.takedBoxes.Length, 0.4f), 0.5f);
-            if(stackCount > 0) {Collectable_Object.localRotation = Quaternion.Euler(0, Random.Range(-3,4), 0);}
-            else
-            Collectable_Object.localRotation = Quaternion.Euler(0, 0, 0);
-            stackCount++;
-            characterScript.GetTakedList();
+            Transform takedBox = other.transform;
+            takedBox.tag = ("Taked");
+            takedBox.SetParent(boxParentPos);
+            TakedBoxesAdd(takedBox);
+            takedBox.transform.DOLocalMove(new Vector3(0.1f, 0.6f + objectHight * stackCount, 0.4f), 0.5f);
+            takedBox.localRotation = Quaternion.Euler(0, 0, 0);
+            Debug.Log(stackCount);
         }
     }
-    private void Start()
+
+
+    public void TakedBoxesAdd(Transform takedBox)
     {
-        characterScript = playerScript.GetComponent<Character>();
+        takedBoxes.Add(takedBox);
+        stackCount++;
+        IsEmptyStack();
+    }
+
+
+    public async void TakedBoxesReduce(Transform takedBox)
+    {
+        if (stackCount > 0) 
+        {
+            await Task.Delay(300);
+            takedBox.gameObject.SetActive(false);
+            stackCount--; 
+            IsEmptyStack(); 
+        }
+    }
+
+    public void IsEmptyStack()
+    {
+        if (stackCount == 0)
+        {
+            //takedBoxes.Clear();
+            CharacterScript.IsRunningEmpty(true);
+        }
+        else
+        {
+            CharacterScript.IsRunningEmpty(false);
+        }
     }
 }

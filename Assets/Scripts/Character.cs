@@ -5,18 +5,23 @@ using UnityEngine.UIElements;
 
 public class Character : MonoBehaviour
 {
-    public GameObject[] takedBoxes;
+
     public float speed;
     public bool isRunningEmpty;
     [SerializeField] public FloatingJoystick joystick;
     [SerializeField] public Rigidbody rb;
     [SerializeField] public Animator animator;
 
+    private void Start()
+    {
+        isRunningEmpty = true;
+    }
+
     void FixedUpdate()
     {
         Moving();
         CheckingForAnims();
-        GetTakedList();
+        Debug.Log(isRunningEmpty);
     }
 
     void Moving()
@@ -30,22 +35,15 @@ public class Character : MonoBehaviour
         } else { animator.SetBool("isRunning", false); }
     }
 
-    public void GetTakedList()
+
+    public void CheckingForAnims()
     {
-        takedBoxes = GameObject.FindGameObjectsWithTag("Taked");
+        if (isRunningEmpty == false) { isRunningEmpty = false; animator.SetBool("isRunningEmpty", false); } else { isRunningEmpty = true; animator.SetBool("isRunningEmpty", true); }
+
     }
 
-    public void RemoveTakedFromList(GameObject obj)
+    public void IsRunningEmpty(bool isTaked)
     {
-        for (int i = 0; i <= takedBoxes.Length; i++)
-        {
-            Destroy(takedBoxes[i]);
-        }
-    }
-
-    void CheckingForAnims()
-    {
-        if (takedBoxes.Length > 0) { isRunningEmpty = false; animator.SetBool("isRunningEmpty", false); } else { isRunningEmpty = true; animator.SetBool("isRunningEmpty", true); }
-
+        isRunningEmpty = isTaked;
     }
 }

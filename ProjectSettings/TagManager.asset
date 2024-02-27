@@ -7,6 +7,8 @@ TagManager:
   - stacking
   - Taked
   - untacked
+  - boxesParent
+  - Stacking
   layers:
   - Default
   - TransparentFX

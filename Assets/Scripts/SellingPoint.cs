@@ -1,37 +1,64 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using UnityEditor.VersionControl;
 using UnityEngine;
+using UnityEngine.AdaptivePerformance.VisualScripting;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
+using Task = System.Threading.Tasks.Task;
 
 public class SellingPoint : MonoBehaviour
 {
+    public Stacking Stacking;
+    public Character Character;
     public GameObject playerScript;
-    public GameObject SellPosition;
     public Transform TransformSellPosition;
-
     public Vector3 targetPosition;
-    private float jumpPower = 2;
-    private int numJumps = 1;
-    private float duration = 2;
+    public float jumpPower = 1f;
+    public int numJumps = 1;
+    public float duration = 2f;
+    public float yBoxAxes;
+    public float boxDelay;
+    public Transform BoxParentPos;
 
+    public void OnTriggerEnter(Collider other)
+    {
+         ColliderEvent(other);
+    }
 
-    void OnTriggerEnter(Collider other)
+    void Start()
+    {
+        Character = Character.GetComponent<Character>();
+        Stacking = Stacking.GetComponent<Stacking>();
+    }
+
+    public async void ColliderEvent(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            // Получаем компонент Character на объекте Player
-            Character characterScript = other.GetComponent<Character>();
-
-            foreach (GameObject obj in characterScript.takedBoxes)
+            for (var index = Stacking.takedBoxes.Count - 1; index >= 0; index--)
             {
-                obj.transform.DOJump(targetPosition, jumpPower, numJumps, duration); //анимация
+                await Task.Delay(300);
+                Stacking.takedBoxes[index].DOJump(new Vector3(TransformSellPosition.position.x, yBoxAxes, TransformSellPosition.position.z), jumpPower, numJumps, duration)
+                    .SetDelay(boxDelay).SetEase(Ease.Flash);
+                Stacking.takedBoxes.ElementAt(index).parent = TransformSellPosition;
+                Stacking.takedBoxes.RemoveAt(index);
+                yBoxAxes += 0.2f;
+                boxDelay += 0.02f;
+
             }
         }
     }
-
-    private void Start()
+    public void IsBoxParentEmpty()
     {
-        targetPosition = TransformSellPosition.position;
+        if(BoxParentPos.childCount == 0)
+        {
+            Stacking.isListEmpty = true;
+        }
     }
 }
