@@ -22,16 +22,17 @@ public class Stacking : MonoBehaviour
     public int stackCount;
     public float objectHight = 0.185f;
     public float duration = 2f;
+
+    private bool isBlocked = false;
     
 
 
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
+        if (stackCount > SaveManager.EventMaxBoxesLoad())
         {
-            Debug.Log("EEE");
-            SaveManager.MaxBoxesAdd(2);
+            isBlocked = true;
         }
     }
 
@@ -43,8 +44,12 @@ public class Stacking : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        int maxTaked = SaveManager.EventMaxBoxesLoad();
-        if(other.CompareTag("Stacking") && maxTaked > stackCount)
+        if (isBlocked)
+        {
+            return;
+        }
+        
+        if(other.CompareTag("Stacking"))
         {
             Transform takedBox = other.transform;
             takedBox.tag = ("Taked");

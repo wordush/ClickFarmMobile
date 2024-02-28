@@ -38,7 +38,16 @@ public class Character : MonoBehaviour
 
     public void CheckingForAnims()
     {
-        if (isRunningEmpty == false) { isRunningEmpty = false; animator.SetBool("isRunningEmpty", false); } else { isRunningEmpty = true; animator.SetBool("isRunningEmpty", true); }
+        if (isRunningEmpty == false)
+        {
+            isRunningEmpty = false;
+            animator.SetBool("isRunningEmpty", false);
+        }
+        else
+        {
+            isRunningEmpty = true;
+            animator.SetBool("isRunningEmpty", true);
+        }
 
     }
 

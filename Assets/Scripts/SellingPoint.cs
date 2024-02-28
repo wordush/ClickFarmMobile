@@ -22,7 +22,7 @@ public class SellingPoint : MonoBehaviour
     public float jumpPower = 1f;
     public int numJumps = 1;
     public float duration = 2f;
-    public float yBoxAxes;
+    public float yBoxAxes = 0.0f;
     public float boxDelay;
     public Transform BoxParentPos;
 
@@ -41,17 +41,20 @@ public class SellingPoint : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            for (var index = Stacking.takedBoxes.Count - 1; index >= 0; index--)
+            Stacking.isBlocked = false;
+            var boxesLocalCopy = Stacking.takedBoxes;
+            Stacking.takedBoxes.Clear();
+            for (var index = boxesLocalCopy.Count - 1; index >= 0; index--)
             {
                 await Task.Delay(300);
-                Stacking.takedBoxes[index].DOJump(new Vector3(TransformSellPosition.position.x, yBoxAxes, TransformSellPosition.position.z), jumpPower, numJumps, duration)
+                boxesLocalCopy[index].DOJump(new Vector3(TransformSellPosition.position.x, yBoxAxes, TransformSellPosition.position.z), jumpPower, numJumps, duration)
                     .SetDelay(boxDelay).SetEase(Ease.Flash);
-                Stacking.takedBoxes.ElementAt(index).parent = TransformSellPosition;
-                Stacking.takedBoxes.RemoveAt(index);
+                boxesLocalCopy.ElementAt(index).parent = TransformSellPosition;
                 yBoxAxes += 0.2f;
                 boxDelay += 0.02f;
 
             }
+            
         }
     }
     public void IsBoxParentEmpty()
