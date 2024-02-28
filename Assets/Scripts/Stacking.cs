@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.SocialPlatforms;
-using System.Threading.Tasks;
-using System.Linq;
 
 public class Stacking : MonoBehaviour
 {
@@ -24,12 +20,13 @@ public class Stacking : MonoBehaviour
     public float duration = 2f;
 
     public bool isBlocked = false;
-    
 
 
 
     void Update()
     {
+        IsEmptyStack();
+
         if (stackCount >= SaveManager.EventMaxBoxesLoad())
         {
             isBlocked = true;
@@ -48,8 +45,8 @@ public class Stacking : MonoBehaviour
         {
             return;
         }
-        
-        if(other.CompareTag("Stacking"))
+
+        if (other.CompareTag("Stacking"))
         {
             Transform takedBox = other.transform;
             takedBox.tag = ("Taked");
@@ -66,20 +63,8 @@ public class Stacking : MonoBehaviour
     {
         takedBoxes.Add(takedBox);
         stackCount++;
-        IsEmptyStack();
     }
 
-
-    public async void TakedBoxesReduce(Transform takedBox)
-    {
-        if (stackCount > 0) 
-        {
-            await Task.Delay(300);
-            takedBox.gameObject.SetActive(false);
-            stackCount--; 
-            IsEmptyStack(); 
-        }
-    }
 
     public void IsEmptyStack()
     {
@@ -93,4 +78,5 @@ public class Stacking : MonoBehaviour
             CharacterScript.IsRunningEmpty(false);
         }
     }
+
 }

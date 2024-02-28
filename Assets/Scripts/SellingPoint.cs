@@ -1,15 +1,6 @@
 using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using UnityEngine.AdaptivePerformance.VisualScripting;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 using Task = System.Threading.Tasks.Task;
 
 public class SellingPoint : MonoBehaviour
@@ -42,21 +33,22 @@ public class SellingPoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Stacking.isBlocked = false;
-            List<Transform> boxesLocalCopy = new List<Transform>();
+            var boxesLocalCopy = new Transform[Stacking.takedBoxes.Count];
             Stacking.takedBoxes.CopyTo(boxesLocalCopy);
             Stacking.takedBoxes.Clear();
+            Stacking.stackCount = 0;
             
-            for (var index = boxesLocalCopy.Count - 1; index >= 0; index--)
+            for (var index = boxesLocalCopy.Length - 1; index >= 0; index--)
             {
                 await Task.Delay(300);
                 boxesLocalCopy[index].DOJump(new Vector3(TransformSellPosition.position.x, yBoxAxes, TransformSellPosition.position.z), jumpPower, numJumps, duration)
                     .SetDelay(boxDelay).SetEase(Ease.Flash);
-                boxesLocalCopy.ElementAt(index).parent = TransformSellPosition;
+                boxesLocalCopy[index].parent = TransformSellPosition;
                 yBoxAxes += 0.2f;
                 boxDelay += 0.02f;
 
             }
-            
+        
         }
     }
     public void IsBoxParentEmpty()
