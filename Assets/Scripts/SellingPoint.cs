@@ -42,8 +42,10 @@ public class SellingPoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Stacking.isBlocked = false;
-            var boxesLocalCopy = Stacking.takedBoxes;
+            List<Transform> boxesLocalCopy = new List<Transform>();
+            Stacking.takedBoxes.CopyTo(boxesLocalCopy);
             Stacking.takedBoxes.Clear();
+            
             for (var index = boxesLocalCopy.Count - 1; index >= 0; index--)
             {
                 await Task.Delay(300);

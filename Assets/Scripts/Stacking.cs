@@ -23,14 +23,14 @@ public class Stacking : MonoBehaviour
     public float objectHight = 0.185f;
     public float duration = 2f;
 
-    private bool isBlocked = false;
+    public bool isBlocked = false;
     
 
 
 
     void Update()
     {
-        if (stackCount > SaveManager.EventMaxBoxesLoad())
+        if (stackCount >= SaveManager.EventMaxBoxesLoad())
         {
             isBlocked = true;
         }
