@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.SocialPlatforms;
-using System.Threading.Tasks;
-using System.Linq;
 
 public class Stacking : MonoBehaviour
 {
@@ -22,16 +18,18 @@ public class Stacking : MonoBehaviour
     public int stackCount;
     public float objectHight = 0.185f;
     public float duration = 2f;
-    
+
+    public bool isBlocked = false;
 
 
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
+        IsEmptyStack();
+
+        if (stackCount >= SaveManager.EventMaxBoxesLoad())
         {
-            Debug.Log("EEE");
-            SaveManager.MaxBoxesAdd(2);
+            isBlocked = true;
         }
     }
 
@@ -43,8 +41,12 @@ public class Stacking : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        int maxTaked = SaveManager.EventMaxBoxesLoad();
-        if(other.CompareTag("Stacking") && maxTaked > stackCount)
+        if (isBlocked)
+        {
+            return;
+        }
+
+        if (other.CompareTag("Stacking"))
         {
             Transform takedBox = other.transform;
             takedBox.tag = ("Taked");
@@ -61,20 +63,8 @@ public class Stacking : MonoBehaviour
     {
         takedBoxes.Add(takedBox);
         stackCount++;
-        IsEmptyStack();
     }
 
-
-    public async void TakedBoxesReduce(Transform takedBox)
-    {
-        if (stackCount > 0) 
-        {
-            await Task.Delay(300);
-            takedBox.gameObject.SetActive(false);
-            stackCount--; 
-            IsEmptyStack(); 
-        }
-    }
 
     public void IsEmptyStack()
     {
@@ -88,4 +78,5 @@ public class Stacking : MonoBehaviour
             CharacterScript.IsRunningEmpty(false);
         }
     }
+
 }
