@@ -21,7 +21,6 @@ public class Character : MonoBehaviour
     {
         Moving();
         CheckingForAnims();
-        Debug.Log(isRunningEmpty);
     }
 
     void Moving()
